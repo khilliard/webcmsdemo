@@ -1,18 +1,54 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-container>
+    <!-- display presentations header -->
+    <v-row class="mt-n3" align="center">
+      <div class="pl-1">Uploaded Presentations:</div>
+      <v-spacer />
+      <presentation-upload />
+    </v-row>
+    <v-row>
+      <!-- display retrieved presentations -->
+      <div class="list-container">
+        <presentation
+          v-for="presentation in presentations"
+          :presentation="presentation"
+          :key="presentation.id"
+        />
+      </div>
+      <div class="ml-2 mt-1">
+        Click
+        <span class="amber--text">UPLOAD</span> to upload file to CMS
+      </div>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import firebaseApp from "@/firebase";
+import { mapState, mapGetters } from "vuex";
+import Presentation from "@/components/presentation/Presentation";
+import PresentationUpload from "@/components/presentation/PresentationUpload";
 
 export default {
-  name: 'home',
+  name: "Home",
   components: {
-    HelloWorld
+    Presentation,
+    PresentationUpload
+  },
+
+  computed: {
+    ...mapGetters(["presentations"])
   }
-}
+};
 </script>
+
+<style scoped>
+.list-container {
+  width: 100%;
+  height: calc(100vh - 170px);
+  border: 2px #444;
+  border-style: inset;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+</style>
